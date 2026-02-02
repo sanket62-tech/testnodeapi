@@ -1,4 +1,4 @@
-const FormEntry = require('./models/formEntry.model');
+const FormEntry = require('../models/formEntry.model');
 
 exports.createEntry = (data) => {
   const entry = new FormEntry(data);
