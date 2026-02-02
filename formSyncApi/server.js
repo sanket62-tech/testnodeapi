@@ -1,28 +1,21 @@
-// ================================
-// 1️⃣ Import required packages
-// ================================
+ 
+ 
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-// ================================
-// 2️⃣ Initialize Express app
-// ================================
+ 
+ 
 const app = express();
 app.use(bodyParser.json());
 
-// ================================
-// 3️⃣ Connect to MongoDB
-// ================================
+ 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/formSyncDB';
 
 mongoose.connect(MONGODB_URI)
-  .then(() => console.log('✅ MongoDB connected'))
-  .catch(err => console.error('❌ MongoDB error:', err));
-
-// ================================
-// 4️⃣ Mongoose Schema
-// ================================
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB error:', err));
+ 
 const formEntrySchema = new mongoose.Schema({
   entry_id: Number,
   formId: { type: Number, required: true },
@@ -57,9 +50,7 @@ const formEntrySchema = new mongoose.Schema({
 
 const FormEntry = mongoose.model('form_entries', formEntrySchema);
 
-// ================================
-// 5️⃣ POST API – Save Form Entry
-// ================================
+ 
 app.post('/api/form-entry', async (req, res) => {
   try {
     const entry = new FormEntry(req.body);
@@ -80,9 +71,8 @@ app.post('/api/form-entry', async (req, res) => {
   }
 });
 
-// ================================
-// 6️⃣ POST API – Filter by created_by or added_by
-// ================================
+// POST API – Filter by created_by or added_by
+ 
 app.post('/api/form-entries/filter', async (req, res) => {
   try {
     const { created_by, added_by } = req.body;
@@ -120,10 +110,8 @@ app.post('/api/form-entries/filter', async (req, res) => {
     });
   }
 });
-
-// ================================
-// 7️⃣ Start Server
-// ================================
+ 
+ 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
