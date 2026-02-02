@@ -18,7 +18,7 @@ mongoose.connect(MONGODB_URI)
  
 const formEntrySchema = new mongoose.Schema({
   entry_id: Number,
-  formId: { type: Number, required: true },
+  form_id: { type: Number, required: true },
   category_id: Number,
   case_struct_id: Number,
   case_id: Number,
@@ -75,6 +75,15 @@ app.post('/api/form-entry', async (req, res) => {
  
 app.post('/api/form-entries/filter', async (req, res) => {
   try {
+    // Check if database is connected
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({
+        success: false,
+        message: 'Database not connected',
+        error: 'Service temporarily unavailable'
+      });
+    }
+
     const { created_by, added_by } = req.body;
     
     let filter = {};
@@ -96,6 +105,15 @@ app.post('/api/form-entries/filter', async (req, res) => {
     
     const entries = await FormEntry.find(filter).sort({ created_dt: -1 });
     
+    // Check if no entries found
+    if (entries.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'No entries found for the particular user',
+        count: 0
+      });
+    }
+    
     res.status(200).json({
       success: true,
       count: entries.length,
@@ -103,6 +121,7 @@ app.post('/api/form-entries/filter', async (req, res) => {
     });
     
   } catch (error) {
+    console.error('Error fetching form entries:', error);
     res.status(500).json({
       success: false,
       message: 'Error fetching form entries',
