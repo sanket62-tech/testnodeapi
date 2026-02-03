@@ -24,7 +24,7 @@ exports.filterFormEntries = async (req, res) => {
     if (data.length === 0) {
       return res.status(404).json({
         success: false,
-        message: 'No entries found',
+        message: 'No entries founds',
         count: 0
       });
     }
