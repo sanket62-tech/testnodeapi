@@ -7,7 +7,7 @@ exports.createFormEntry = async (req, res) => {
       success: true,
       message: 'Form entry saved successfully',
       mongoId: saved._id,
-      entry_id: saved.entry_id
+      record_unique_id: saved.record_unique_id
     });
   } catch (err) {
     res.status(500).json({
