@@ -18,7 +18,7 @@ const formEntrySchema = new mongoose.Schema(
     remote_record: { type: Number, default: 0 },
     added_by: Number,
     added_on: String,
-    is_synced: { type: Number, default: 1 },
+    is_synced: { type: Number, default: 1, immutable: true, set: () => 1 },
     synced_at: Date,
     remote_form_id: Number,
     status: { type: Number, default: 1 },
