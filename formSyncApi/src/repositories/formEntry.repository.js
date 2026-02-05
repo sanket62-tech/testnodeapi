@@ -12,7 +12,7 @@ const upsertOne = async (doc) => {
 
   const hasKey = !!doc.record_unique_id && addedBy !== undefined && !Number.isNaN(addedBy);
   if (hasKey) {
-    const filter = { record_unique_id: doc.record_unique_id, added_by: addedBy };
+    const filter = { record_unique_id: doc.record_unique_id, added_by: addedBy, form_id: doc.form_id };
     const update = { $set: doc };
     const options = { upsert: true, new: true };
     return FormEntry.findOneAndUpdate(filter, update, options);
